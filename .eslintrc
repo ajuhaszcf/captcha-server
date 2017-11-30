@@ -1,0 +1,10 @@
+{
+  "extends": "airbnb-base",
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "prefer-destructuring": 0,
+    "no-console": 0
+  }
+}
