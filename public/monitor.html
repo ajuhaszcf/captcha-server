@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      #root {
+        width: 640px;
+        height: 640px;
+        background-image: url("/images/monitor/cara.png");
+        background-size: contain;
+      }
+
+      img {
+        width: 10px;
+        height: 10px;
+        float: left;
+      }
+    </style>
+    <title>Captcha</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      function draw() {
+        fetch('/monitor').then(resp => resp.json())
+          .then((res) => {
+            var node = document.getElementById("root");
+            node.innerHTML = "";
+            res.forEach((e, index) => {
+              var img = document.createElement("img");
+              // img.setAttribute('src', `/images/monitor/I${index+1}cara.png`);
+              img.setAttribute('style', `opacity:${e}; background-color: blue;`);
+              node.appendChild(img);
+            })
+          });
+      }
+      setInterval(() => {
+        draw();
+      }, 5000);
+      draw();
+    </script>
+    <div id="root">
+    </div>
+  </body>
+</html>

@@ -13,9 +13,6 @@ app.use(bodyParser.json());
 app.use(cookieParser('cfsecret'));
 app.use(cors());
 app.options('*', cors()); // include before other routes
-app.use(express.static('public', {
-  maxage: '10m',
-}));
 
 const fixedSecret = 'token';
 
@@ -58,8 +55,7 @@ app.post('/recaptcha/api/siteverify', (req, res) => {
 });
 
 app.post('/captcha/attempt', (req, res) => {
-  console.log(req.body);
-  const taskId = req.body.taskid;
+  const taskId = req.body.taskId;
 
   const tokenAttempt = {
     id: `${makeid(10)}-${makeid(10)}`,
@@ -107,6 +103,14 @@ app.get('/captcha', (req, res) => {
   work.taskId = taskId;
   res.json(work);
 });
+
+app.get('/monitor', (req, res) => {
+  res.json(carJob.getStatus());
+});
+
+app.use(express.static('public', {
+  maxage: '10m',
+}));
 
 const server = app.listen(process.env.PORT || 3001, (err) => {
   if (err) throw err;
