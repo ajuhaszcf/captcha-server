@@ -22,17 +22,18 @@ jobs.cell1 = readCellDir('cell1');
 jobs.cell2 = readCellDir('cell2');
 jobs.cell3 = readCellDir('cell3');
 jobs.cell4 = readCellDir('cell4');
+jobs.car1 = readCellDir('car1');
+console.log(jobs.car1);
 
 // console.log(cell1Job);
 
 function getWork(qs) {
   const root = qs.root || '';
-  const taskToken = qs.tasktoken || _.sample(['cell1', 'cell2', 'cell3', 'cell4']);
+  const taskToken = qs.tasktoken || _.sample(Object.keys(jobs));
   console.log(taskToken, root);
   const images = [];
   for (let i = 1; i <= 16; i += 1) {
     const address = _.compact([].concat(root, i)).join('.');
-    console.log(jobs[taskToken][address]);
     images.push(jobs[taskToken][address]);
   }
   return {

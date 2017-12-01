@@ -30,7 +30,8 @@ function getWork() {
   };
 }
 
-function checkWork(images) {
+function checkWork(body) {
+  const images = body.images;
   // console.log(req.body.images);
   const goldIds = goldFlooding.map(element => element.id);
   const negIds = negativeFlooding.map(element => element.id);
@@ -42,7 +43,6 @@ function checkWork(images) {
     .filter(image => negIds.indexOf(image.id) !== -1)
     .reduce((acc, image) => acc || image.selected, false);
 
-  console.log(gold, negative);
   return gold && negative;
 }
 

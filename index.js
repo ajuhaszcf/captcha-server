@@ -66,7 +66,7 @@ app.post('/captcha/attempt', (req, res) => {
 
   switch (taskId) {
     default:
-      tokenAttempt.success = floodJob.checkWork(req.body.images);
+      tokenAttempt.success = floodJob.checkWork(req.body);
       break;
   }
 
