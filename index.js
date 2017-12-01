@@ -2,13 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const fs = require('fs');
-const _ = require('lodash');
 
-const floodedPhotos = fs.readdirSync(`${__dirname}/public/images/flooded`).map(filename => `images/flooded/${filename}`);
-const floodingPhotos = fs.readdirSync(`${__dirname}/public/images/flooding`).map(filename => `images/flooding/${filename}`);
-
-const checkWork = require('./checkWork').check;
+const floodJob = require('./flooding');
+const cellJob = require('./cell');
+const makeid = require('./idgen');
 
 const app = express();
 app.use(bodyParser.json());
@@ -20,6 +17,10 @@ app.use(express.static('public'));
 const fixedSecret = 'token';
 
 const tokens = {};
+
+app.get('/recaptcha/api/siteverify', (req, res) => {
+  res.json(tokens[req.query.id]);
+});
 
 app.post('/recaptcha/api/siteverify', (req, res) => {
   const secret = req.body.secret;
@@ -53,40 +54,46 @@ app.post('/recaptcha/api/siteverify', (req, res) => {
   return res.json(answer);
 });
 
-function makeid(length) {
-  let text = '';
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-  for (let i = 0; i < length; i += 1) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-
-  return text;
-}
-
 app.post('/captcha/attempt', (req, res) => {
   console.log(req.body);
-  console.log(req.headers);
+  const taskId = req.body.taskid;
+
   const tokenAttempt = {
     id: `${makeid(10)}-${makeid(10)}`,
-    success: checkWork(),
+    success: false,
     hostname: req.headers.origin || 'https://', // grab from cookies?
   };
 
+  switch (taskId) {
+    default:
+      tokenAttempt.success = floodJob.checkWork(req.body.images);
+      break;
+  }
+
   tokens[tokenAttempt.id] = tokenAttempt;
 
-  res.json(tokenAttempt.id);
+  res.json({
+    token: tokenAttempt.id,
+    success: tokenAttempt.success,
+  });
 });
 
 app.get('/captcha', (req, res) => {
-  const floodedSample = _.sampleSize(floodedPhotos, 5);
-  const floodingSample = _.sampleSize(floodingPhotos, 4);
+  let taskId = req.query.taskid;
+  let work = null;
 
-  const aSample = [].concat(floodedSample, floodingSample);
-  res.json({
-    task: 'flooded areas',
-    images: aSample.map((image, index) => ({ id: index.toString(), src: image, selected: false })),
-  });
+  switch (taskId) {
+    case '1':
+      work = cellJob.getWork(req.query);
+      break;
+    default:
+      taskId = '0';
+      work = floodJob.getWork(req.query);
+      break;
+  }
+
+  work.taskId = taskId;
+  res.json(work);
 });
 
 const server = app.listen(process.env.PORT || 3001, (err) => {
