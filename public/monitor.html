@@ -14,6 +14,24 @@
         height: 10px;
         float: left;
       }
+      button {
+        color: #FFF;
+        background-color: #4981DF;
+        border-color: #4981DF;
+        border: 0;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: Roboto,helvetica,arial,sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        height: 42px;
+        line-height: 42px;
+        min-width: 100px;
+        padding: 0 10px 0 10px;
+        text-align: center;
+        text-transform: uppercase;
+        margin-top: 30px;
+      }
     </style>
     <title>Captcha</title>
   </head>
@@ -27,17 +45,26 @@
             res.forEach((e, index) => {
               var img = document.createElement("img");
               // img.setAttribute('src', `/images/monitor/I${index+1}cara.png`);
-              img.setAttribute('style', `opacity:${e}; background-color: blue;`);
+              img.setAttribute('style', `opacity:${e}; background-color: #5AC597;`);
               node.appendChild(img);
             })
           });
       }
       setInterval(() => {
         draw();
-      }, 5000);
+      }, 200);
       draw();
+      function reset() {
+        fetch('/monitor/rewet');
+      }
     </script>
     <div id="root">
+    </div>
+    <div id="url">
+
+    </div>
+    <div id="buttons">
+      <button onclick="reset()">Reset</button>
     </div>
   </body>
 </html>

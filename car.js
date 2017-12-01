@@ -17,16 +17,20 @@ function readCellDir(dir) {
   return cellJob;
 }
 
-const status = {};
-for (let x = 0; x < 64; x += 1) {
-  for (let y = 0; y < 64; y += 1) {
-    status[`${x},${y}`] = {
-      large: false,
-      medium: false,
-      small: false,
-    };
+let status = {};
+function reset() {
+  status = {};
+  for (let x = 0; x < 64; x += 1) {
+    for (let y = 0; y < 64; y += 1) {
+      status[`${x},${y}`] = {
+        large: false,
+        medium: false,
+        small: false,
+      };
+    }
   }
 }
+reset();
 
 const jobs = {};
 jobs.car1 = readCellDir('car1');
@@ -58,9 +62,7 @@ function getWork(qs) {
 }
 
 function checkWork(body) {
-  console.log(body);
   const selected = body.images[0].filter(im => im.selected);
-  console.log(selected);
   selected.forEach((pixel) => {
     const root = pixel.match.length;
     const coords = [{
@@ -73,18 +75,14 @@ function checkWork(body) {
     for (let i = 1; i < root; i += 1) {
       const level = pixel.match[i];
       const pix = {
-        x: coords[i-1].x + Math.floor((level - 1) % 4) * Math.pow(4, 2 - i),
-        y: coords[i-1].y + Math.floor((level - 1) / 4) * Math.pow(4, 2 - i),
+        x: coords[i - 1].x + (Math.floor((level - 1) % 4) * Math.pow(4, 2 - i)),
+        y: coords[i - 1].y + (Math.floor((level - 1) / 4) * Math.pow(4, 2 - i)),
         w: Math.pow(4, (2 - i)),
         h: Math.pow(4, (2 - i)),
       };
-      console.log(level, i)
       coords.push(pix);
     }
-    console.log(coords);
     const current = coords.splice(-1)[0];
-    console.log(coords);
-    console.log(current);
     for (let x = current.x; x < current.x + current.w; x += 1) {
       for (let y = current.y; y < current.y + current.h; y += 1) {
         switch (root) {
@@ -119,6 +117,11 @@ function getStatus() {
   return arr;
 }
 
+function resetStatus() {
+  reset();
+}
+
 module.exports.getWork = getWork;
 module.exports.checkWork = checkWork;
 module.exports.getStatus = getStatus;
+module.exports.resetStatus = resetStatus;

@@ -108,6 +108,11 @@ app.get('/monitor', (req, res) => {
   res.json(carJob.getStatus());
 });
 
+app.get('/monitor/reset', (req, res) => {
+  carJob.resetStatus();
+  res.json({});
+});
+
 app.use(express.static('public', {
   maxage: '10m',
 }));
