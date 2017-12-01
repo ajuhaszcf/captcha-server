@@ -143,7 +143,7 @@ function getStatus() {
   for (let y = 0; y < 64; y += 1) {
     for (let x = 0; x < 64; x += 1) {
       const pixel = status[`${x},${y}`];
-      const score = (pixel.large ? 0.1 : 0) + (pixel.medium ? 0.3 : 0) + (pixel.small ? 1 : 0);
+      const score = pixel;
       arr.push(score);
     }
   }

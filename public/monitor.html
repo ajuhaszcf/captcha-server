@@ -45,7 +45,14 @@
             res.forEach((e, index) => {
               var img = document.createElement("img");
               // img.setAttribute('src', `/images/monitor/I${index+1}cara.png`);
-              img.setAttribute('style', `opacity:${e}; background-color: #5AC597;`);
+              if (e.small) {
+                img.setAttribute('style', `opacity:0.6; background-color: #D45113;`);
+              } else if (e.medium) {
+                img.setAttribute('style', `opacity:0.4; background-color: #F3CA40;`);
+              } else {
+                img.setAttribute('style', `opacity:0; background-color: #5AC597;`);
+              } 
+              3
               node.appendChild(img);
             })
           });
@@ -55,7 +62,7 @@
       }, 200);
       draw();
       function reset() {
-        fetch('/monitor/rewet');
+        fetch('/monitor/reset');
       }
     </script>
     <div id="root">
