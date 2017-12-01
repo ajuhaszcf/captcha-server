@@ -1,1 +1,16 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name="theme-color" content="#000000"><link rel="manifest" href="/manifest.json"><link rel="shortcut icon" href="/favicon.ico"><title>React App</title><link href="/static/css/main.75cd0ee4.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div><script type="text/javascript" src="/static/js/main.ad20bb72.js"></script></body></html>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name="theme-color" content="#000000"><link rel="manifest" href="/manifest.json"><link rel="shortcut icon" href="/favicon.ico"><style>button.cf-captcha-secondary-button{color:#fff;background-color:#5ac597;border-color:#5ac597;border:0;border-radius:4px;cursor:pointer;font-family:Roboto,helvetica,arial,sans-serif;font-size:14px;font-weight:500;height:42px;line-height:42px;min-width:100px;padding:0 10px 0 10px;text-align:center;text-transform:uppercase}button.cf-captcha-boring-button{color:#fff;background-color:#7d8c9c;border-color:#7d8c9c;border:0;border-radius:4px;cursor:pointer;font-family:Roboto,helvetica,arial,sans-serif;font-size:14px;font-weight:500;height:42px;line-height:42px;min-width:100px;padding:0 10px 0 10px;text-align:center;text-transform:uppercase}.demo{margin:10px}</style><title>Captcha</title><script type="text/javascript">function nextDemo() {
+        const qs = {};
+        document.location.search.slice(1).split('&').forEach(e => {
+          const arr = e.split('=');
+          qs[arr[0]] = arr[1];
+        });
+        if (qs.demo) {
+          document.location = document.location.origin + '/?demo=' + (parseInt(qs.demo, 10) + 1);
+        } else {
+          document.location = document.location.origin + '/?demo=0';
+        }
+      }
+
+      function restartDemo() {
+        document.location = document.location.origin + '/?demo=0';
+      }</script><link href="/static/css/main.6d7c514a.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div><div class="demo" style="max-width:405px"><button class="cf-captcha-secondary-button" style="float:left" onclick="nextDemo()">Next Demo</button> <button class="cf-captcha-boring-button" style="float:right" onclick="restartDemo()">Restart Demo</button></div><script type="text/javascript" src="/static/js/main.704cea28.js"></script></body></html>

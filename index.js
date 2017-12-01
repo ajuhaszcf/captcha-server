@@ -12,7 +12,9 @@ app.use(bodyParser.json());
 app.use(cookieParser('cfsecret'));
 app.use(cors());
 app.options('*', cors()); // include before other routes
-app.use(express.static('public'));
+app.use(express.static('public', {
+  maxage: '10m',
+}));
 
 const fixedSecret = 'token';
 

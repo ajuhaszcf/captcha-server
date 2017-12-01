@@ -15,7 +15,7 @@ const notfloodedPhotos = fs.readdirSync(`${__dirname}/public/images/notflooded`)
   id: `${makeid(10)}-${makeid(10)}-${makeid(10)}`,
 }));
 
-const goldFlooding = [].concat(floodedPhotos, floodingPhotos);
+const goldFlooding = [].concat(floodingPhotos);
 const negativeFlooding = [].concat(notfloodedPhotos);
 
 function getWork() {
