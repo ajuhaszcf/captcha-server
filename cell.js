@@ -22,28 +22,28 @@ jobs.cell1 = readCellDir('cell1');
 jobs.cell2 = readCellDir('cell2');
 jobs.cell3 = readCellDir('cell3');
 jobs.cell4 = readCellDir('cell4');
+// Car
 jobs.car1 = readCellDir('car1');
-console.log(jobs.car1);
-
-// console.log(cell1Job);
+jobs.car1.instr = 'with a car in it';
 
 function getWork(qs) {
   const root = qs.root || '';
   const taskToken = qs.tasktoken || _.sample(Object.keys(jobs));
   console.log(taskToken, root);
   const images = [];
+  const theJob = jobs[taskToken];
   for (let i = 1; i <= 16; i += 1) {
     const address = _.compact([].concat(root, i)).join('.');
-    images.push(jobs[taskToken][address]);
+    images.push(theJob[address]);
   }
   return {
-    task: 'where cells touch each other',
+    task: theJob.instr || 'where cells touch each other',
     taskToken,
     images: images.map(image => ({ id: image.id, src: image.name, selected: false })),
   };
 }
 
-function checkWork(images) {
+function checkWork(body) {
   return true;
 }
 
