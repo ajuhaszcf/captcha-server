@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 
 const floodJob = require('./flooding');
 const cellJob = require('./cell');
+const carJob = require('./car');
 const makeid = require('./idgen');
 
 const app = express();
@@ -67,6 +68,12 @@ app.post('/captcha/attempt', (req, res) => {
   };
 
   switch (taskId) {
+    case '1':
+      tokenAttempt.success = cellJob.checkWork(req.body);
+      break;
+    case '2':
+      tokenAttempt.success = carJob.checkWork(req.body);
+      break;
     default:
       tokenAttempt.success = floodJob.checkWork(req.body);
       break;
@@ -87,6 +94,9 @@ app.get('/captcha', (req, res) => {
   switch (taskId) {
     case '1':
       work = cellJob.getWork(req.query);
+      break;
+    case '2':
+      work = carJob.getWork(req.query);
       break;
     default:
       taskId = '0';

@@ -26,12 +26,14 @@ function getWork() {
   return {
     task: 'with flooded areas',
     taskToken: Math.round(Math.random() * 1000000).toString(),
-    images: aSample.map(image => ({ id: image.id, src: image.name, selected: false })),
+    images: [
+      aSample.map(image => ({ id: image.id, src: image.name, selected: false }))
+    ],
   };
 }
 
 function checkWork(body) {
-  const images = body.images;
+  const images = body.images[0];
   // console.log(req.body.images);
   const goldIds = goldFlooding.map(element => element.id);
   const negIds = negativeFlooding.map(element => element.id);
