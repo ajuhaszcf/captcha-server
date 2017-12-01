@@ -3,7 +3,7 @@ const _ = require('lodash');
 const makeid = require('./idgen');
 
 function readCellDir(dir) {
-  const cell1 = fs.readdirSync(`${__dirname}/public/images/${dir}`).filter(e => /.png$/.test(e)).map(e => ({
+  const cell1 = fs.readdirSync(`${__dirname}/public/images/${dir}`).filter(e => /^I.*.png$/.test(e)).map(e => ({
     match: e.match(/(\d+)/g).reverse(),
     name: `images/${dir}/${e}`,
     id: `${makeid(10)}-${makeid(10)}-${makeid(10)}`,
@@ -36,6 +36,36 @@ const jobs = {};
 jobs.car1 = readCellDir('car1');
 jobs.car1.instr = 'with a car in it';
 
+function getCoordFromRoot(root) {
+  const levels = _.compact(root.split('.'));
+  if (levels.length === 0) {
+    return {
+      x: 0,
+      y: 0,
+      w: 0,
+      h: 0,
+    };
+  }
+  const coords = [{
+    x: Math.floor((levels[0] - 1) % 4) * Math.pow(4, 2),
+    y: Math.floor((levels[0] - 1) / 4) * Math.pow(4, 2),
+    w: Math.pow(4, 2),
+    h: Math.pow(4, 2),
+  }];
+  for (let i = 1; i < levels.length; i += 1) {
+    const level = levels[i];
+    const pix = {
+      x: coords[i - 1].x + (Math.floor((level - 1) % 4) * Math.pow(4, 2 - i)),
+      y: coords[i - 1].y + (Math.floor((level - 1) / 4) * Math.pow(4, 2 - i)),
+      w: Math.pow(4, (2 - i)),
+      h: Math.pow(4, (2 - i)),
+    };
+    coords.push(pix);
+  }
+
+  return coords.splice(-1)[0];
+}
+
 function getWork(qs) {
   const root = qs.root || '';
   const taskToken = qs.tasktoken || _.sample(Object.keys(jobs));
@@ -50,6 +80,9 @@ function getWork(qs) {
     task: theJob.instr || 'with a car in it',
     taskToken,
     root,
+    rootImage: '/images/car1/cara.png',
+    scale: Math.pow(4, _.compact(root.split('.')).length),
+    translate: getCoordFromRoot(root),
     images: [
       images.map(image => ({
         id: image.id,
