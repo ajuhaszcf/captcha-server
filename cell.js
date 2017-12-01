@@ -22,9 +22,6 @@ jobs.cell1 = readCellDir('cell1');
 jobs.cell2 = readCellDir('cell2');
 jobs.cell3 = readCellDir('cell3');
 jobs.cell4 = readCellDir('cell4');
-// Car
-jobs.car1 = readCellDir('car1');
-jobs.car1.instr = 'with a car in it';
 
 function getWork(qs) {
   const root = qs.root || '';
