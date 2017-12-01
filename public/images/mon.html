@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      #root {
+        width: 640px;
+        height: 640px;
+        background-image: url("/images/monitor/cara.png");
+        background-size: contain;
+      }
+
+      img {
+        width: 10px;
+        height: 10px;
+        float: left;
+      }
+      button {
+        color: #FFF;
+        background-color: #4981DF;
+        border-color: #4981DF;
+        border: 0;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: Roboto,helvetica,arial,sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        height: 42px;
+        line-height: 42px;
+        min-width: 100px;
+        padding: 0 10px 0 10px;
+        text-align: center;
+        text-transform: uppercase;
+        margin-top: 30px;
+      }
+    </style>
+    <title>Captcha</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      function draw() {
+        fetch('/monitor').then(resp => resp.json())
+          .then((res) => {
+            var node = document.getElementById("root");
+            node.innerHTML = "";
+            res.forEach((e, index) => {
+              var img = document.createElement("img");
+              // img.setAttribute('src', `/images/monitor/I${index+1}cara.png`);
+              if (e.small) {
+                img.setAttribute('style', `opacity:0.6; background-color: #D45113;`);
+              } else if (e.medium) {
+                img.setAttribute('style', `opacity:0.4; background-color: #F3CA40;`);
+              } else {
+                img.setAttribute('style', `opacity:0; background-color: #5AC597;`);
+              } 
+              3
+              node.appendChild(img);
+            })
+          });
+      }
+      setInterval(() => {
+        draw();
+      }, 200);
+      draw();
+      function reset() {
+        fetch('/monitor/reset');
+      }
+    </script>
+    <div id="root">
+    </div>
+    <div id="url">
+      <h1> https://goo.gl/D4vb2z</h1>
+    </div>
+    <div id="buttons">
+      <button onclick="reset()">Reset</button>
+    </div>
+  </body>
+</html>
